@@ -34,49 +34,49 @@ function addMember() {
         message: "Enter team member's email address",
         name: "email"
     }])
-    .then(function({name, role, id, email}) {
-        let roleInfo = "";
-        if (role === "Engineer") {
-            roleInfo = "GitHub username";
-        } else if (role === "Intern") {
-            roleInfo = "school name";
-        } else {
-            roleInfo = "office phone number";
-        }
-        inquirer.prompt([{
-            message: `Enter team member's ${roleInfo}`,
-            name: "roleInfo"
-        },
-        {
-            type: "list",
-            message: "Would you like to add more team members?",
-            choices: [
-                "yes",
-                "no"
-            ],
-            name: "moreMembers"
-        }])
-        .then(function({roleInfo, moreMembers}) {
-            let newMember;
+        .then(function ({ name, role, id, email }) {
+            let roleInfo = "";
             if (role === "Engineer") {
-                newMember = new Engineer(name, id, email, roleInfo);
+                roleInfo = "GitHub username";
             } else if (role === "Intern") {
-                newMember = new Intern(name, id, email, roleInfo);
+                roleInfo = "school name";
             } else {
-                newMember = new Manager(name, id, email, roleInfo);
+                roleInfo = "office phone number";
             }
-            employees.push(newMember);
-            addHtml(newMember)
-            .then(function() {
-                if (moreMembers === "yes") {
-                    addMember();
-                } else {
-                    finishHtml();
-                }
-            });
-            
+            inquirer.prompt([{
+                message: `Enter team member's ${roleInfo}`,
+                name: "roleInfo"
+            },
+            {
+                type: "list",
+                message: "Would you like to add more team members?",
+                choices: [
+                    "yes",
+                    "no"
+                ],
+                name: "moreMembers"
+            }])
+                .then(function ({ roleInfo, moreMembers }) {
+                    let newMember;
+                    if (role === "Engineer") {
+                        newMember = new Engineer(name, id, email, roleInfo);
+                    } else if (role === "Intern") {
+                        newMember = new Intern(name, id, email, roleInfo);
+                    } else {
+                        newMember = new Manager(name, id, email, roleInfo);
+                    }
+                    employees.push(newMember);
+                    addHtml(newMember)
+                        .then(function () {
+                            if (moreMembers === "yes") {
+                                addMember();
+                            } else {
+                                finishHtml();
+                            }
+                        });
+
+                });
         });
-    });
 }
 
 // function renderHtml(memberArray) {
@@ -103,7 +103,7 @@ function startHtml() {
         </nav>
         <div class="container">
             <div class="row">`;
-    fs.writeFile("./output/team.html", html, function(err) {
+    fs.writeFile("./output/team.html", html, function (err) {
         if (err) {
             console.log(err);
         }
@@ -112,7 +112,7 @@ function startHtml() {
 }
 
 function addHtml(member) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const name = member.getName();
         const role = member.getRole();
         const id = member.getId();
@@ -163,12 +163,12 @@ function addHtml(member) {
             return resolve();
         });
     });
-    
-            
-    
-        
-    
-    
+
+
+
+
+
+
 }
 
 function finishHtml() {
